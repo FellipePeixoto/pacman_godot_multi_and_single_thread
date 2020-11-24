@@ -1,0 +1,92 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scripts/Blinky.gd" type="Script" id=1]
+[ext_resource path="res://sprites/pacman_sprites.png" type="Texture" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 8.0
+
+[sub_resource type="Animation" id=2]
+resource_name = "down"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 552, 64, 16, 16 ), Rect2( 568, 64, 16, 16 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "left"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 488, 64, 16, 16 ), Rect2( 504, 64, 16, 16 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "right"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 456, 64, 16, 16 ), Rect2( 472, 64, 16, 16 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "up"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 520, 64, 16, 16 ), Rect2( 536, 64, 16, 16 ) ]
+}
+
+[node name="Blinky" type="Area2D"]
+position = Vector2( 96, 113 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 456, 64, 16, 16 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/down = SubResource( 2 )
+anims/left = SubResource( 3 )
+anims/right = SubResource( 4 )
+anims/up = SubResource( 5 )
