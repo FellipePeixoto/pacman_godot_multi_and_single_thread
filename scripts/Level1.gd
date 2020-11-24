@@ -25,6 +25,7 @@ func get_path_to_pacman(ghost : Vector2):
 func _physics_process(delta):
 	if (game_over and Input.is_action_just_pressed("ui_select")):
 		game_over = false
+		director.start_threads = true
 		if (old_scene):
 			get_tree().reload_current_scene()
 		old_scene = true
@@ -61,3 +62,6 @@ func _physics_process(delta):
 		pacman.score += 200
 		label_stats.text = "SCORE: %d"%[pacman.score]
 	INIT_EXECUTION_TIME = OS.get_ticks_usec()
+	
+func _exit_tree():
+	game_over = true
