@@ -11,44 +11,50 @@ onready var pacman = get_parent().get_node("Pacman")
 onready var tile_map = get_parent().get_node("Navigation2D/TileMap")
 onready var level1 = get_parent()
 var INIT_GHOSTS_EXECUTION_TIME
-var start_threads = false
 var blinky_thread : Thread = Thread.new()
 var pinky_thread : Thread = Thread.new()
 var inky_thread : Thread = Thread.new()
 var clyde_thread : Thread = Thread.new()
+var delta_time = 0
+var still_running = true
+
+func _ready():
+	blinky_thread.start(self, "blink_set", 1)
+	pinky_thread.start(self, "pinky_set", 1)
+	inky_thread.start(self, "inky_set", 1)
+	clyde_thread.start(self, "clyde_set", 1)
+	pass
 
 func _physics_process(delta):
 	INIT_GHOSTS_EXECUTION_TIME = OS.get_ticks_usec()
-	if (start_threads):
-		blinky_thread.start(self, "blink_set", delta)
-		pinky_thread.start(self, "pinky_set", delta)
-		inky_thread.start(self, "inky_set", delta)
-		clyde_thread.start(self, "clyde_set", delta)
-		start_threads = false
-		pass
+	delta_time = delta
 
 func blink_set(delta):
-	while (!level1.game_over):
-		Blinky.call_deferred("behaviour", delta)
-		Blinky.call_deferred("update_ghost",delta)
+	yield(level1, "game_started")
+	while (still_running):
+		Blinky.call_deferred("behaviour", delta_time)
+		Blinky.call_deferred("update_ghost",delta_time)
 		yield(get_tree(), "idle_frame")
 
 func pinky_set(delta):
-	while (!level1.game_over):
-		Pinky.call_deferred("behaviour",delta)
-		Pinky.call_deferred("update_ghost",delta)
+	yield(level1, "game_started")
+	while (still_running):
+		Pinky.call_deferred("behaviour",delta_time)
+		Pinky.call_deferred("update_ghost",delta_time)
 		yield(get_tree(), "idle_frame")
 	
 func inky_set(delta):
-	while (!level1.game_over):
-		Inky.call_deferred("behaviour",delta)
-		Inky.call_deferred("update_ghost",delta)
+	yield(level1, "game_started")
+	while (still_running):
+		Inky.call_deferred("behaviour",delta_time)
+		Inky.call_deferred("update_ghost",delta_time)
 		yield(get_tree(), "idle_frame")
 	
 func clyde_set(delta):
-	while (!level1.game_over):
-		Clyde.call_deferred("behaviour",delta)
-		Clyde.call_deferred("update_ghost",delta)
+	yield(level1, "game_started")
+	while (still_running):
+		Clyde.call_deferred("behaviour",delta_time)
+		Clyde.call_deferred("update_ghost",delta_time)
 		yield(get_tree(), "idle_frame")
 
 func _on_Pacman_get_big_dot():
@@ -58,8 +64,15 @@ func _on_Pacman_get_big_dot():
 	Clyde.set_ia_state(Clyde.STATE_RETREATING)
 	
 func _exit_tree():
-	blinky_thread.wait_to_finish()
-	pinky_thread.wait_to_finish()
-	inky_thread.wait_to_finish()
-	clyde_thread.wait_to_finish()
+	if(blinky_thread.is_active()):
+		blinky_thread.wait_to_finish()
+	if(pinky_thread.is_active()):
+		pinky_thread.wait_to_finish()
+	if(inky_thread.is_active()):
+		inky_thread.wait_to_finish()
+	if(clyde_thread.is_active()):
+		clyde_thread.wait_to_finish()
 	pass
+
+func _on_Level1_game_over():
+	still_running = false

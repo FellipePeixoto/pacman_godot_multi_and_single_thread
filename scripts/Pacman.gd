@@ -64,10 +64,12 @@ func eat():
 		wall.set_cell(curr_tile.x, curr_tile.y, 22)
 		score += 10
 		level1.label_stats.text = "SCORE: %d"%[score]
+		level1.all_dots_count -= 1
 		return
 	if (curr_tile_id == wall.big_dot_id):
 		wall.set_cell(curr_tile.x, curr_tile.y, 22)
 		score += 50
 		level1.label_stats.text = "SCORE: %d"%[score]
 		emit_signal("get_big_dot")
+		level1.all_dots_count -= 1
 		return

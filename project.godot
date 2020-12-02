@@ -30,7 +30,7 @@ window/size/height=278
 window/size/test_width=448
 window/size/test_height=556
 window/stretch/mode="2d"
-window/stretch/aspect="expand"
+window/stretch/aspect="keep"
 
 [physics]
 

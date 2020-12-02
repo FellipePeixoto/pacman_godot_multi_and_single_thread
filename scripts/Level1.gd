@@ -1,5 +1,6 @@
 extends Node2D
 
+signal game_started
 signal game_over
 
 onready var pacman = get_node("Pacman")
@@ -8,6 +9,7 @@ onready var blinky = get_node("Director/Blinky")
 onready var pinky = get_node("Director/Pinky")
 onready var inky = get_node("Director/Inky")
 onready var clyde = get_node("Director/Clyde")
+onready var tile_maps = get_node("Navigation2D/TileMap")
 onready var label_right = get_node("Label")
 onready var label_stats = get_node("Stats")
 onready var navigation2d : Navigation2D = $Navigation2D
@@ -15,8 +17,12 @@ var msg_txt = "PRESS SPACE BAR\nTO START"
 var game_over = true
 var old_scene = false
 var INIT_EXECUTION_TIME
+var all_dots_count : int
 
 func _ready():
+	var dots = tile_maps.get_used_cells_by_id(tile_maps.dot_id)
+	var big_dots = tile_maps.get_used_cells_by_id(tile_maps.dot_id)
+	all_dots_count = dots.size() + big_dots.size()
 	pass
 
 func get_path_to_pacman(ghost : Vector2):
@@ -25,10 +31,11 @@ func get_path_to_pacman(ghost : Vector2):
 func _physics_process(delta):
 	if (game_over and Input.is_action_just_pressed("ui_select")):
 		game_over = false
-		director.start_threads = true
 		if (old_scene):
 			get_tree().reload_current_scene()
+			return
 		old_scene = true
+		emit_signal("game_started")
 		msg_txt = "PRESS SPACE BAR\nTO PLAY AGAIN"
 	if (game_over):
 		label_right.text = msg_txt
@@ -61,7 +68,11 @@ func _physics_process(delta):
 		clyde.set_ia_state(clyde.STATE_DEAD)
 		pacman.score += 200
 		label_stats.text = "SCORE: %d"%[pacman.score]
+	if (all_dots_count < 1):
+		emit_signal("game_over")
+		game_over = true
 	INIT_EXECUTION_TIME = OS.get_ticks_usec()
 	
 func _exit_tree():
+	emit_signal("game_over")
 	game_over = true

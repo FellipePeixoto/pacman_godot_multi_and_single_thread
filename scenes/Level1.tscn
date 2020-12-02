@@ -425,19 +425,19 @@ tracks/0/keys = {
 "values": [ Rect2( 520, 112, 16, 16 ), Rect2( 536, 112, 16, 16 ) ]
 }
 
-[sub_resource type="DynamicFont" id=39]
+[sub_resource type="DynamicFont" id=29]
 size = 13
 extra_spacing_space = 1
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=40]
+[sub_resource type="DynamicFont" id=30]
 size = 20
 font_data = ExtResource( 2 )
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 7 )
 
-[node name="backfround" type="ColorRect" parent="."]
+[node name="background" type="ColorRect" parent="."]
 margin_top = 248.0
 margin_right = 224.0
 margin_bottom = 280.0
@@ -624,7 +624,7 @@ margin_top = 248.0
 margin_right = 189.0
 margin_bottom = 298.0
 rect_scale = Vector2( 0.6, 0.6 )
-custom_fonts/font = SubResource( 39 )
+custom_fonts/font = SubResource( 29 )
 max_lines_visible = 5
 __meta__ = {
 "_edit_use_anchors_": false
@@ -636,11 +636,12 @@ margin_top = 248.0
 margin_right = 296.0
 margin_bottom = 298.0
 rect_scale = Vector2( 0.6, 0.6 )
-custom_fonts/font = SubResource( 40 )
+custom_fonts/font = SubResource( 30 )
 text = "SCORE: 0"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="game_over" from="." to="Director" method="_on_Level1_game_over"]
 [connection signal="get_big_dot" from="Pacman" to="Director" method="_on_Pacman_get_big_dot"]
 [connection signal="on_current_dir_change" from="Pacman" to="Director/Pinky" method="_on_Pacman_on_current_dir_change"]
 [connection signal="on_current_dir_change" from="Pacman" to="Director/Inky" method="_on_Pacman_on_current_dir_change"]
